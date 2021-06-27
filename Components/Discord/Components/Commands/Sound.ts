@@ -14,10 +14,6 @@ export class SoundCommand extends SlashCommand {
     }
 
     async run(ctx: CommandContext) {
-        const firstKey = Object.keys(ctx.options)[0];
-        this.soundFxHelper.playCommand(firstKey, ctx.options[firstKey].sound);
-        return {
-            content: 'Playing Sound...'
-        };
+        this.soundFxHelper.playCommand(ctx);
     }
 }

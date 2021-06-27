@@ -1,0 +1,22 @@
+{
+  "name": "discord-fx-player",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "author": "jimchen5209 <jimchen5209@gmail.com>",
+  "license": "GPL-3.0-only",
+  "scripts": {
+    "start": "node dist",
+    "lint": "tslint --project . --fix",
+    "build": "tsc --pretty",
+    "build:prod": "tsc --pretty --sourceMap false"
+  },
+  "dependencies": {
+    "eris": "^0.15.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.28.0",
+    "@typescript-eslint/parser": "^4.28.0",
+    "eslint": "^7.29.0",
+    "typescript": "^4.3.4"
+  }
+}

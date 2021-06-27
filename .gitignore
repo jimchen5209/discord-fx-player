@@ -128,3 +128,5 @@ dist
 
 #project
 config.json
+sound.json
+assets/

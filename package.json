@@ -11,9 +11,13 @@
     "build:prod": "tsc --pretty --sourceMap false"
   },
   "dependencies": {
-    "eris": "^0.15.1"
+    "eris": "^0.15.1",
+    "logging-ts": "https://github.com/jimchen5209/Logging-TS.git",
+    "slash-create": "^3.2.3"
   },
   "devDependencies": {
+    "@types/node": "^15.12.5",
+    "@types/ws": "^7.4.5",
     "@typescript-eslint/eslint-plugin": "^4.28.0",
     "@typescript-eslint/parser": "^4.28.0",
     "eslint": "^7.29.0",

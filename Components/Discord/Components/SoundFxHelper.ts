@@ -21,6 +21,10 @@ export class SoundFxHelper{
         this.logger = new Category('SoundFxHelper', core.mainLogger);
     }
 
+    public reloadSoundList() {
+        this.soundFx.reload();
+    }
+
     public getCommandList() {
         const list = this.soundFx.getSoundCommandList();
 

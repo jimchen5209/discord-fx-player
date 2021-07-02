@@ -1,11 +1,12 @@
 import { Client } from 'eris';
 import { Category } from 'logging-ts';
-import { AnyRequestData, GatewayServer, SlashCommand, SlashCreator } from 'slash-create';
+import { AnyRequestData, CommandContext, GatewayServer, SlashCommand, SlashCreator } from 'slash-create';
 import { Core } from '../../..';
 import { Config } from '../../../Core/Config';
 import { AbortCommand } from './Commands/Abort';
 import { FlushCommand } from './Commands/Flush';
 import { PingCommand } from './Commands/Ping';
+import { ReloadCommand } from './Commands/Reload';
 import { SoundCommand } from './Commands/Sound';
 import { SoundFxHelper } from './SoundFxHelper';
 
@@ -58,11 +59,40 @@ export class Command {
                 new PingCommand(this.creator, guildIDs),
                 new SoundCommand(this.creator, guildIDs, this.soundFxHelper),
                 new AbortCommand(this.creator, guildIDs, this.soundFxHelper),
-                new FlushCommand(this.creator, guildIDs, this.soundFxHelper)
+                new FlushCommand(this.creator, guildIDs, this.soundFxHelper),
+                new ReloadCommand(this.creator, guildIDs, this)
             ];
 
             this.creator.registerCommands(commands);
             this.creator.syncCommands();
         });
+    }
+
+    private unregisterCommands() {
+        this.logger.info('Clearing registered commands...');
+
+        this.creator.commands.forEach(value => {
+            this.creator.unregisterCommand(value);
+        });
+
+        this.creator.syncCommands();
+    }
+
+    public async reloadCommand(context: CommandContext) {
+        if (!context.guildID || !context.member) return;
+        if (!(this.config.discord.admins.includes(context.member.id))) {
+            await context.send({
+                content: 'Permission Denied',
+                ephemeral: true
+            });
+            return;
+        }
+        await context.send('Clearing command registration...');
+        this.unregisterCommands();
+        await context.editOriginal('Reloading soundlist...');
+        this.soundFxHelper.reloadSoundList();
+        await context.editOriginal('Re-registering commands...');
+        this.refreshCommands();
+        await context.editOriginal('Done');
     }
 }

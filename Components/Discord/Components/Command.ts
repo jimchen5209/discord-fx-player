@@ -3,6 +3,7 @@ import { Category } from 'logging-ts';
 import { AnyRequestData, GatewayServer, SlashCommand, SlashCreator } from 'slash-create';
 import { Core } from '../../..';
 import { Config } from '../../../Core/Config';
+import { AbortCommand } from './Commands/Abort';
 import { PingCommand } from './Commands/Ping';
 import { SoundCommand } from './Commands/Sound';
 import { SoundFxHelper } from './SoundFxHelper';
@@ -54,7 +55,8 @@ export class Command {
 
             const commands: SlashCommand[] = [
                 new PingCommand(this.creator, guildIDs),
-                new SoundCommand(this.creator, guildIDs, this.soundFxHelper)
+                new SoundCommand(this.creator, guildIDs, this.soundFxHelper),
+                new AbortCommand(this.creator, guildIDs, this.soundFxHelper)
             ];
 
             this.creator.registerCommands(commands);

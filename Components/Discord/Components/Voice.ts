@@ -65,4 +65,12 @@ export class DiscordVoice extends EventEmitter {
             this.voice.play(file);
         });
     }
+
+    public abort(): boolean {
+        if (this.voice && this.voice.playing) {
+            this.voice.stopPlaying();
+            return true;
+        }
+        return false;
+    }
 }

@@ -86,7 +86,7 @@ export class SoundFxHelper{
         const channelId = member.voiceState.channelID;
         if (!channelId) {
             await context.send({
-                content: 'You are not even in a voice channel.',
+                content: 'You are not even in a voice channel',
                 ephemeral: true
             });
             return;
@@ -118,7 +118,7 @@ export class SoundFxHelper{
         const channelId = member.voiceState.channelID;
         if (!channelId) {
             await context.send({
-                content: 'Join a voice channel to replay.',
+                content: 'Join a voice channel to replay',
                 ephemeral: true
             });
             return;
@@ -154,6 +154,32 @@ export class SoundFxHelper{
                 }
             };
             this.audios[guildId].on('queueUpdate', refresh);
+        }
+    }
+    
+    public async abort(context: CommandContext) {
+        if (!context.guildID || !context.member) return;
+        // const member = await this.bot.getRESTGuildMember(context.guildID, context.member.id);
+        if (!this.audios[context.guildID]) {
+            await context.send({
+                content: 'Bot\'s not currently playing',
+                ephemeral: true
+            });
+            return;
+        }
+        else
+        {
+            if (this.audios[context.guildID].abort()) {
+                await context.send({
+                    content: 'Sound has been stopped'
+                });
+            }
+            else {
+                await context.send({
+                    content: 'Bot\'s not currently playing',
+                    ephemeral: true
+                });
+            }
         }
     }
 }

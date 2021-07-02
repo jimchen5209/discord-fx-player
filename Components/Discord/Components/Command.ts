@@ -37,13 +37,9 @@ export class Command {
             );
 
         this.creator.on('componentInteraction', async ctx => {
-            if (ctx.customID === 'example_button') {
-                await ctx.editParent('You clicked a button! This will overwrite the original message!');
-                await ctx.send('You clicked a button! This will reply to the original message!');
-            }
-
-            if (ctx.customID === 'button_destroy') {
-                await ctx.editParent('按鈕被幹掉了', { components:[] });
+            if (ctx.customID.startsWith('replay_')) {
+                const commands = ctx.customID.split('_');
+                this.soundFxHelper.replayCommand(ctx, commands[1], commands[2]);
             }
         });
     }

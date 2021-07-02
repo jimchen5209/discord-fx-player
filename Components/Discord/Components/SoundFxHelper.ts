@@ -4,7 +4,7 @@ import Queue from 'promise-queue';
 import { Core } from '../../..';
 import { SoundFx } from '../../../Core/SoundFX';
 import { DiscordVoice } from './Voice';
-import { ApplicationCommandOption, ApplicationCommandOptionChoice, ButtonStyle, CommandContext, CommandOptionType, ComponentActionRow, ComponentType } from 'slash-create';
+import { ApplicationCommandOption, ApplicationCommandOptionChoice, ButtonStyle, CommandContext, CommandOptionType, ComponentActionRow, ComponentContext, ComponentType, MessageInteractionContext } from 'slash-create';
 
 export class SoundFxHelper{
     private bot: Client;
@@ -97,12 +97,33 @@ export class SoundFxHelper{
         await context.send('Queued...', {
             components: [this.getReplayButton(subCommand, command, true)]
         });
-        await this.play(context.guildID, channelId , this.soundFx.getAssetFromCommand(subCommand, command), context);
+        await this.play(context.guildID, channelId, subCommand, command , this.soundFx.getAssetFromCommand(subCommand, command), context);
     }
 
-    public async play(guildId: string, channelId: string, file: string, context: CommandContext | undefined = undefined) {
+    public async replayCommand(context: ComponentContext, subCommand: string, command: string ) {
+        if (!context.guildID || !context.member) return;
+        const member = await this.bot.getRESTGuildMember(context.guildID, context.member.id);
+        if (!member) return;
+        const channelId = member.voiceState.channelID;
+        if (!channelId) {
+            await context.send({
+                content: 'Join a voice channel to replay.',
+                ephemeral: true
+            });
+            return;
+        }
+
+        // const subCommand = 
+        // // const command = 
+        await context.editOriginal('Queued...', {
+            components: [this.getReplayButton(subCommand, command, true)]
+        });
+        await this.play(context.guildID, channelId, this.soundFx.getAssetFromCommand(subCommand, command), subCommand, command, context);
+    }
+
+    public async play(guildId: string, channelId: string, file: string, subCommand: string | undefined = undefined, command: string | undefined = undefined, context: MessageInteractionContext | undefined = undefined) {
         if (!this.audios[guildId]) this.audios[guildId] = new DiscordVoice(this.bot, this.logger, guildId);
-        const queue = this.audios[guildId].queuePlay(channelId, file, context, this);
+        const queue = this.audios[guildId].queuePlay(channelId, file, subCommand, command, context, this);
         if (context) {
             context.editOriginal(`Pending: ${queue.getPendingLength()}/1 Queued: ${queue.getQueueLength()}`);
         }

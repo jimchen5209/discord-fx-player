@@ -4,7 +4,7 @@ import { Client, VoiceConnection } from 'eris';
 import EventEmitter from 'events';
 import { Category } from 'logging-ts';
 import Queue from 'promise-queue';
-import { CommandContext } from 'slash-create';
+import { MessageInteractionContext } from 'slash-create';
 import { SoundFxHelper } from './SoundFxHelper';
 
 export class DiscordVoice extends EventEmitter {
@@ -30,12 +30,12 @@ export class DiscordVoice extends EventEmitter {
         this.logger = logger;
     }
 
-    public queuePlay(channelID: string, file: string, context: CommandContext | undefined = undefined, helper: SoundFxHelper | undefined = undefined) {
-        this.queue.add(() => this.play(channelID, file, context, helper));
+    public queuePlay(channelID: string, file: string, subCommand: string | undefined, command: string | undefined, context: MessageInteractionContext | undefined = undefined, helper: SoundFxHelper | undefined = undefined) {
+        this.queue.add(() => this.play(channelID, file, subCommand, command, context, helper));
         return this.queue;
     }
 
-    public play(channelID: string, file: string, context: CommandContext | undefined, helper: SoundFxHelper | undefined = undefined) {
+    public play(channelID: string, file: string, subCommand: string | undefined, command: string | undefined, context: MessageInteractionContext | undefined, helper: SoundFxHelper | undefined = undefined) {
         // eslint-disable-next-line no-async-promise-executor
         return new Promise<void>(async (res) => {
             this.emit('queueUpdate', this.queue, context?.interactionID);
@@ -55,9 +55,7 @@ export class DiscordVoice extends EventEmitter {
 
             await waitUntil(() => this.voice && this.voice.ready);
             this.voice.once('end', () => {
-                if (context && helper) {
-                    const subCommand = Object.keys(context.options)[0];
-                    const command = context.options[subCommand].sound;
+                if (context && helper && subCommand && command) {
                     context.editOriginal('Finished playing', {
                         components: [helper.getReplayButton(subCommand, command, false)]
                     });

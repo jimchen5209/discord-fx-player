@@ -94,10 +94,21 @@ export class SoundFxHelper{
 
         const subCommand = Object.keys(context.options)[0];
         const command = context.options[subCommand].sound;
+
+        const sound = this.soundFx.getAssetFromCommand(subCommand, command);
+
+        if (!sound) {
+            await context.send({
+                content: 'Invalid sound',
+                ephemeral: true
+            });
+            return;
+        }
+
         await context.send('Queued...', {
             components: [this.getReplayButton(subCommand, command, true)]
         });
-        await this.play(context.guildID, channelId, subCommand, command , this.soundFx.getAssetFromCommand(subCommand, command), context);
+        await this.play(context.guildID, channelId, sound, subCommand, command, context);
     }
 
     public async replayCommand(context: ComponentContext, subCommand: string, command: string ) {
@@ -113,12 +124,19 @@ export class SoundFxHelper{
             return;
         }
 
-        // const subCommand = 
-        // // const command = 
+        const sound = this.soundFx.getAssetFromCommand(subCommand, command);
+
+        if (!sound) {
+            await context.editOriginal('Sound is no longer valid', { components: [] });
+            return;
+        }
+
         await context.editOriginal('Queued...', {
             components: [this.getReplayButton(subCommand, command, true)]
         });
-        await this.play(context.guildID, channelId, this.soundFx.getAssetFromCommand(subCommand, command), subCommand, command, context);
+
+
+        await this.play(context.guildID, channelId, sound, subCommand, command, context);
     }
 
     public async play(guildId: string, channelId: string, file: string, subCommand: string | undefined = undefined, command: string | undefined = undefined, context: MessageInteractionContext | undefined = undefined) {

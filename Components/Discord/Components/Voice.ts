@@ -1,5 +1,4 @@
 import { waitUntil } from 'async-wait-until';
-// import FFmpeg from 'fluent-ffmpeg';
 import { Client, VoiceConnection } from 'eris';
 import EventEmitter from 'events';
 import { Category } from 'logging-ts';
@@ -64,14 +63,6 @@ export class DiscordVoice extends EventEmitter {
                 res();
             });
             this.voice.play(file);
-            // FFmpeg.ffprobe(file, (_, data) => {
-            //     this.voice?.play(file);
-            //     const time = data.format.duration || 0;
-            //     setTimeout(() => {
-            //         this.voice?.stopPlaying();
-            //         res();
-            //     }, time * 1200);
-            // });
         });
     }
 }

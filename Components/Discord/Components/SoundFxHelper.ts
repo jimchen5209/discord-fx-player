@@ -5,8 +5,10 @@ import { Core } from '../../..';
 import { SoundFx } from '../../../Core/SoundFX';
 import { DiscordVoice } from './Voice';
 import { ApplicationCommandOption, ApplicationCommandOptionChoice, ButtonStyle, CommandContext, CommandOptionType, ComponentActionRow, ComponentContext, ComponentType, MessageInteractionContext } from 'slash-create';
+import { Config } from '../../../Core/Config';
 
 export class SoundFxHelper{
+    private config: Config;
     private bot: Client;
     private soundFx: SoundFx;
     private logger: Category;
@@ -14,6 +16,7 @@ export class SoundFxHelper{
 
     constructor(core: Core, bot: Client) {
         this.bot = bot;
+        this.config = core.config;
         this.soundFx = new SoundFx(core);
         this.logger = new Category('SoundFxHelper', core.mainLogger);
     }
@@ -159,7 +162,6 @@ export class SoundFxHelper{
     
     public async abort(context: CommandContext) {
         if (!context.guildID || !context.member) return;
-        // const member = await this.bot.getRESTGuildMember(context.guildID, context.member.id);
         if (!this.audios[context.guildID]) {
             await context.send({
                 content: 'Bot\'s not currently playing',
@@ -180,6 +182,33 @@ export class SoundFxHelper{
                     ephemeral: true
                 });
             }
+        }
+    }
+
+    public async flush(context: CommandContext) {
+        if (!context.guildID || !context.member) return;
+        const member = await this.bot.getRESTGuildMember(context.guildID, context.member.id);
+        if (!member) return;
+        if (!(member.permissions.has('administrator')) && !(this.config.discord.admins.includes(member.id))) {
+            await context.send({
+                content: 'Permission Denied',
+                ephemeral: true
+            });
+            return;
+        }
+        if (!this.audios[context.guildID]) {
+            await context.send({
+                content: 'No queue record for this server',
+                ephemeral: true
+            });
+            return;
+        }
+        else {
+            await context.send({
+                content: 'Flushing the queue...'
+            });
+            this.audios[context.guildID].once('queueEmpty', () => context.editOriginal('Done'));
+            this.audios[context.guildID].abortAll();
         }
     }
 }

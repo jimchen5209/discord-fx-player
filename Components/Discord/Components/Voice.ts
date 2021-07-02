@@ -12,12 +12,15 @@ export class DiscordVoice extends EventEmitter {
     private bot: Client;
     private voice: VoiceConnection | undefined;
     private logger: Category;
+    private flush = false;
     private queue: Queue = new Queue(1, Infinity, {
         onEmpty: () => {
             if (this.currentChannelId) {
                 this.bot.leaveVoiceChannel(this.currentChannelId);
                 this.voice = undefined;
                 this.currentChannelId = undefined;
+                this.flush = false;
+                this.emit('queueEmpty');
             }
         }
     });
@@ -39,6 +42,15 @@ export class DiscordVoice extends EventEmitter {
         return new Promise<void>(async (res) => {
             this.emit('queueUpdate', this.queue, context?.interactionID);
             if (file === '') return;
+            if (this.flush) {
+                if (context && helper && subCommand && command) {
+                    context.editOriginal('Queue aborted', {
+                        components: [helper.getReplayButton(subCommand, command, false)]
+                    });
+                }
+                res();
+                return;
+            }
             if (!this.voice) {
                 this.voice = await this.bot.joinVoiceChannel(channelID);
                 this.currentChannelId = channelID;
@@ -53,13 +65,12 @@ export class DiscordVoice extends EventEmitter {
             if (context) context.editOriginal('Playing your requested sound...');
 
             await waitUntil(() => this.voice && this.voice.ready);
-            this.voice.once('end', () => {
+            this.voice.once('end', (abort = false) => {
                 if (context && helper && subCommand && command) {
-                    context.editOriginal('Finished playing', {
+                    context.editOriginal(abort? 'Aborted' : 'Finished playing', {
                         components: [helper.getReplayButton(subCommand, command, false)]
                     });
                 }
-                this.emit('queueFinish');
                 res();
             });
             this.voice.play(file);
@@ -68,9 +79,21 @@ export class DiscordVoice extends EventEmitter {
 
     public abort(): boolean {
         if (this.voice && this.voice.playing) {
+            this.voice.emit('end', true);
             this.voice.stopPlaying();
             return true;
         }
         return false;
+    }
+
+    public abortAll() {
+        if (this.queue.getPendingLength() !== 0 || this.queue.getQueueLength() !== 0) {
+            this.flush = true;
+            this.voice?.emit('end', true);
+            if (this.voice?.playing) this.voice?.stopPlaying();
+        }
+        else {
+            this.emit('queueEmpty');
+        }
     }
 }

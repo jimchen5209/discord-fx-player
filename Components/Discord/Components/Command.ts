@@ -7,7 +7,7 @@ import { AbortCommand } from './Commands/Abort';
 import { FlushCommand } from './Commands/Flush';
 import { PingCommand } from './Commands/Ping';
 import { ReloadCommand } from './Commands/Reload';
-import { SoundCommand } from './Commands/Sound';
+import { PlayCommand } from './Commands/Play';
 import { SoundFxHelper } from './SoundFxHelper';
 
 export class Command {
@@ -57,7 +57,7 @@ export class Command {
 
             const commands: SlashCommand[] = [
                 new PingCommand(this.creator, guildIDs),
-                new SoundCommand(this.creator, guildIDs, this.soundFxHelper),
+                new PlayCommand(this.creator, guildIDs, this.soundFxHelper),
                 new AbortCommand(this.creator, guildIDs, this.soundFxHelper),
                 new FlushCommand(this.creator, guildIDs, this.soundFxHelper),
                 new ReloadCommand(this.creator, guildIDs, this)

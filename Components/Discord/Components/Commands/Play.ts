@@ -1,7 +1,7 @@
 import { CommandContext, SlashCommand, SlashCreator } from 'slash-create';
 import { SoundFxHelper } from '../SoundFxHelper';
 
-export class SoundCommand extends SlashCommand {
+export class PlayCommand extends SlashCommand {
     private soundFxHelper: SoundFxHelper;
     constructor(creator: SlashCreator, guildIDs: string[], soundFxHelper: SoundFxHelper) {
         super(creator, {

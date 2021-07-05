@@ -27,6 +27,7 @@ export class SoundFx {
 
 
     public getAssetFromCommand(command: string, sound: string) {
+        if (!this.command[command]) return undefined;
         return this.command[command][sound];
     }
 

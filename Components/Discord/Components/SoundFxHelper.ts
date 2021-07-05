@@ -87,6 +87,14 @@ export class SoundFxHelper{
     }
 
     public async playCommand(context: CommandContext) {
+        if (this.soundFx.getSoundCommandList().length === 0) {
+            await context.send({
+                content: 'Sound list is empty.',
+                ephemeral: true
+            });
+            return;
+        }
+
         if (!context.guildID || !context.member) return;
         const member = await this.bot.getRESTGuildMember(context.guildID, context.member.id);
         if (!member) return;

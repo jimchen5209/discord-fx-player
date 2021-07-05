@@ -40,7 +40,7 @@ export class DiscordVoice extends EventEmitter {
     public play(channelID: string, file: string, subCommand: string | undefined, command: string | undefined, context: MessageInteractionContext | undefined, helper: SoundFxHelper | undefined = undefined) {
         // eslint-disable-next-line no-async-promise-executor
         return new Promise<void>(async (res) => {
-            this.emit('queueUpdate', this.queue, context?.interactionID);
+            // this.emit('queueUpdate', this.queue, context?.interactionID);
             if (file === '') return;
             if (this.flush) {
                 if (context && helper && subCommand && command) {

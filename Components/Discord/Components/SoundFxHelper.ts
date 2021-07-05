@@ -1,6 +1,6 @@
 import { Client, Message, PossiblyUncachedTextableChannel } from 'eris';
 import { Category } from 'logging-ts';
-import Queue from 'promise-queue';
+// import Queue from 'promise-queue';
 import { Core } from '../../..';
 import { SoundFx } from '../../../Core/SoundFX';
 import { DiscordVoice } from './Voice';
@@ -152,16 +152,16 @@ export class SoundFxHelper{
         if (context) {
             context.editOriginal(`Pending: ${queue.getPendingLength()}/1 Queued: ${queue.getQueueLength()}`);
         }
-        if (context) {
-            const refresh = (eventQueue: Queue, interactionId: string | undefined) => {
-                if (interactionId === context.interactionID) {
-                    this.audios[guildId].removeListener('queueUpdate', refresh);
-                } else {
-                    context.editOriginal(`Pending: ${eventQueue.getPendingLength()}/1 Queued: ${eventQueue.getQueueLength()}`);
-                }
-            };
-            this.audios[guildId].on('queueUpdate', refresh);
-        }
+        // if (context) {
+        //     const refresh = (eventQueue: Queue, interactionId: string | undefined) => {
+        //         if (interactionId === context.interactionID) {
+        //             this.audios[guildId].removeListener('queueUpdate', refresh);
+        //         } else {
+        //             context.editOriginal(`Pending: ${eventQueue.getPendingLength()}/1 Queued: ${eventQueue.getQueueLength()}`);
+        //         }
+        //     };
+        //     this.audios[guildId].on('queueUpdate', refresh);
+        // }
     }
     
     public async abort(context: CommandContext) {

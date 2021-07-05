@@ -215,4 +215,47 @@ export class SoundFxHelper{
             this.audios[context.guildID].abortAll();
         }
     }
+
+    public async presist(context: CommandContext) {
+        if (!context.guildID || !context.member) return;
+        const member = await this.bot.getRESTGuildMember(context.guildID, context.member.id);
+        if (!member) return;
+        if (!(member.permissions.has('administrator')) && !(this.config.discord.admins.includes(member.id))) {
+            await context.send({
+                content: 'Permission Denied',
+                ephemeral: true
+            });
+            return;
+        }
+
+        const option: boolean = context.options.switch;
+
+        if (option) {
+            if (!context.guildID || !context.member) return;
+            const member = await this.bot.getRESTGuildMember(context.guildID, context.member.id);
+            if (!member) return;
+            const channelId = member.voiceState.channelID;
+            if (!channelId) {
+                await context.send({
+                    content: 'Join a voice channel to turn on presist mode',
+                    ephemeral: true
+                });
+                return;
+            }
+
+            if (!this.audios[context.guildID]) this.audios[context.guildID] = new DiscordVoice(this.bot, this.logger, context.guildID);
+            await this.audios[context.guildID].presistSwitch(true, channelId);
+
+            await context.send({
+                content: 'Voice presist mode activated'
+            });
+        } else {
+            if (this.audios[context.guildID]) await this.audios[context.guildID].presistSwitch(false);
+            
+            await context.send({
+                content: 'Bot will now leave voice channel once queue is empty.'
+            });
+        }
+
+    }
 }

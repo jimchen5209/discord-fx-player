@@ -9,6 +9,7 @@ import { PingCommand } from './Commands/Ping';
 import { ReloadCommand } from './Commands/Reload';
 import { PlayCommand } from './Commands/Play';
 import { SoundFxHelper } from './SoundFxHelper';
+import { PresistCommand } from './Commands/PresistMode';
 
 export class Command {
     private config: Config;
@@ -60,6 +61,7 @@ export class Command {
                 new PlayCommand(this.creator, guildIDs, this.soundFxHelper),
                 new AbortCommand(this.creator, guildIDs, this.soundFxHelper),
                 new FlushCommand(this.creator, guildIDs, this.soundFxHelper),
+                new PresistCommand(this.creator, guildIDs, this.soundFxHelper),
                 new ReloadCommand(this.creator, guildIDs, this)
             ];
 

@@ -13,12 +13,16 @@ export class DiscordVoice extends EventEmitter {
     private voice: VoiceConnection | undefined;
     private logger: Category;
     private flush = false;
+    private presist = false;
+
     private queue: Queue = new Queue(1, Infinity, {
         onEmpty: () => {
             if (this.currentChannelId) {
-                this.bot.leaveVoiceChannel(this.currentChannelId);
-                this.voice = undefined;
-                this.currentChannelId = undefined;
+                if (!this.presist) {
+                    this.bot.leaveVoiceChannel(this.currentChannelId);
+                    this.voice = undefined;
+                    this.currentChannelId = undefined;
+                }
                 this.flush = false;
                 this.emit('queueEmpty');
             }
@@ -62,9 +66,10 @@ export class DiscordVoice extends EventEmitter {
 
             this.logger.info(`Playing ${file}`);
 
+            await waitUntil(() => this.voice && this.voice.ready);
+            
             if (context) context.editOriginal('Playing your requested sound...');
 
-            await waitUntil(() => this.voice && this.voice.ready);
             this.voice.once('end', (abort = false) => {
                 if (context && helper && subCommand && command) {
                     context.editOriginal(abort? 'Aborted' : 'Finished playing', {
@@ -75,6 +80,25 @@ export class DiscordVoice extends EventEmitter {
             });
             this.voice.play(file);
         });
+    }
+
+    public async presistSwitch(option: boolean, channelID: string | undefined = undefined) {
+        if (option && channelID) {
+            this.presist = true;
+            if (!this.voice) {
+                this.voice = await this.bot.joinVoiceChannel(channelID);
+                this.currentChannelId = channelID;
+            }
+        } else {
+            this.presist = false;
+            if (this.currentChannelId) {
+                if (this.queue.getPendingLength() === 0 && this.queue.getQueueLength() === 0) {
+                    this.bot.leaveVoiceChannel(this.currentChannelId);
+                    this.voice = undefined;
+                    this.currentChannelId = undefined;
+                }
+            }
+        }
     }
 
     public abort(): boolean {

@@ -18,7 +18,7 @@
     "slash-create": "^3.2.3"
   },
   "devDependencies": {
-    "@types/node": "^16.4.12",
+    "@types/node": "^16.6.0",
     "@types/promise-queue": "^2.2.0",
     "@types/ws": "^7.4.5",
     "@typescript-eslint/eslint-plugin": "^4.28.0",

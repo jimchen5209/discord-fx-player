@@ -1,10 +1,12 @@
 import { Config } from './Core/Config';
 import { catService } from 'logging-ts';
 import { Discord } from './Components/Discord/Core';
+import { Status } from 'status-client';
 
 export class Core {
     public readonly mainLogger = catService;
     public readonly config = new Config(this);
+    private readonly status = new Status('fx-player');
 
     constructor() {
         try {
@@ -15,6 +17,7 @@ export class Core {
                 this.mainLogger.error('Error occurred when connecting to discord:', error);
             }
         }
+        this.status.set_status();
     }
 }
 

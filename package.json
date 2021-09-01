@@ -16,7 +16,7 @@
     "logging-ts": "https://github.com/jimchen5209/Logging-TS.git",
     "promise-queue": "^2.2.5",
     "slash-create": "^3.2.3",
-    "status-client": "https://github.com/jimchen5209/StatusClient_JS#dev"
+    "status-client": "https://github.com/jimchen5209/StatusClient_JS#2.0.0"
   },
   "devDependencies": {
     "@types/node": "^16.4.12",

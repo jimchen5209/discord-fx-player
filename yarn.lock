@@ -946,10 +946,10 @@ shebang-regex@^3.0.0:
   resolved "https://registry.yarnpkg.com/shebang-regex/-/shebang-regex-3.0.0.tgz#ae16f1644d873ecad843b0307b143362d4c42172"
   integrity sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==
 
-slash-create@^3.2.3:
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/slash-create/-/slash-create-3.5.0.tgz#becf5a37a897909a602b839ebbc1dfae25b8cf54"
-  integrity sha512-0Kj5fMSYtNBPCFQj+r0UyZAlFu3IVDwOzB9Eqgbdrps497g8cmVJX+SA32+rd8nzKUi7qnpRpR+sGBzH8yl2bA==
+slash-create@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/slash-create/-/slash-create-4.1.1.tgz#a2348c112bde56bbad1cb572d02e10ff56c4c3d9"
+  integrity sha512-drbYQF4Hv/+C2x2eDcgoy7KLPt6+PW606tbWl/e5o9Qdk1jvh9bbGDSlJcSTFrLMHTtGLYq3QNXZZdNd/oJy3Q==
   dependencies:
     "@discordjs/collection" "^0.2.1"
     eventemitter3 "^4.0.7"

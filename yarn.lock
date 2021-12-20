@@ -23,10 +23,10 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@discordjs/collection@^0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@discordjs/collection/-/collection-0.2.1.tgz#ea4bc7b41b7b7b6daa82e439141222ec95c469b2"
-  integrity sha512-vhxqzzM8gkomw0TYRF3tgx7SwElzUlXT/Aa41O7mOcyN6wIJfj5JmDWaO5XGKsGSsNx7F3i5oIlrucCCWV1Nog==
+"@discordjs/collection@^0.3.2":
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/@discordjs/collection/-/collection-0.3.2.tgz#3c271dd8a93dad89b186d330e24dbceaab58424a"
+  integrity sha512-dMjLl60b2DMqObbH1MQZKePgWhsNe49XkKBZ0W5Acl5uVV43SN414i2QfZwRI7dXAqIn8pEWD2+XXQFn9KWxqg==
 
 "@eslint/eslintrc@^0.4.3":
   version "0.4.3"
@@ -761,11 +761,6 @@ lodash.truncate@^4.4.2:
   resolved "https://registry.yarnpkg.com/lodash.truncate/-/lodash.truncate-4.4.2.tgz#5a350da0b1113b837ecfffd5812cbe58d6eae193"
   integrity sha1-WjUNoLERO4N+z//VgSy+WNbq4ZM=
 
-lodash.uniq@^4.5.0:
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
-  integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
-
 "logging-ts@https://github.com/jimchen5209/Logging-TS.git":
   version "1.0.0"
   resolved "https://github.com/jimchen5209/Logging-TS.git#28c838d95153b84cd99ce7f2d29b2ae6916a70b8"
@@ -949,15 +944,14 @@ shebang-regex@^3.0.0:
   resolved "https://registry.yarnpkg.com/shebang-regex/-/shebang-regex-3.0.0.tgz#ae16f1644d873ecad843b0307b143362d4c42172"
   integrity sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==
 
-slash-create@^3.2.3:
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/slash-create/-/slash-create-3.5.0.tgz#becf5a37a897909a602b839ebbc1dfae25b8cf54"
-  integrity sha512-0Kj5fMSYtNBPCFQj+r0UyZAlFu3IVDwOzB9Eqgbdrps497g8cmVJX+SA32+rd8nzKUi7qnpRpR+sGBzH8yl2bA==
+slash-create@^4.4.2:
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/slash-create/-/slash-create-4.4.2.tgz#00fb98cc0fca54dde10aef263835fd129ae96408"
+  integrity sha512-FC0Xb1dH24EiFbuhbqJZyeMcAbrS/fvXZ9sQjUhzg+InY5KUJYCDq84xhTRuRadWmabpo1s4lreUviCc1EEuaA==
   dependencies:
-    "@discordjs/collection" "^0.2.1"
+    "@discordjs/collection" "^0.3.2"
     eventemitter3 "^4.0.7"
     lodash.isequal "^4.5.0"
-    lodash.uniq "^4.5.0"
     require-all "^3.0.0"
     tweetnacl "^1.0.3"
 

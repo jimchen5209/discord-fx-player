@@ -11,7 +11,7 @@
     "build:prod": "tsc --pretty --sourceMap false"
   },
   "dependencies": {
-    "async-wait-until": "^2.0.7",
+    "async-wait-until": "^2.0.10",
     "eris": "^0.15.1",
     "logging-ts": "https://github.com/jimchen5209/Logging-TS.git",
     "promise-queue": "^2.2.5",

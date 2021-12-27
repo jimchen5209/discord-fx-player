@@ -241,10 +241,10 @@ astral-regex@^2.0.0:
   resolved "https://registry.yarnpkg.com/astral-regex/-/astral-regex-2.0.0.tgz#483143c567aeed4785759c0865786dc77d7d2e31"
   integrity sha512-Z7tMw1ytTXt5jqMcOP+OQteU1VuNK9Y02uuJtKQ1Sv69jXQKKg5cibLwGJow8yzZP+eAc18EmLGPal0bp36rvQ==
 
-async-wait-until@^2.0.7:
-  version "2.0.8"
-  resolved "https://registry.yarnpkg.com/async-wait-until/-/async-wait-until-2.0.8.tgz#fea0a56753fd82ae66f07a8fe5796fbff2e8f647"
-  integrity sha512-G4vSYNJnFW6f83I080+1cGwymShQWuEHnNueS4Q0uNQctXAXaIdysPKYl1ax86/0VA8cVrQGKAqIDtqep3mm5g==
+async-wait-until@^2.0.10:
+  version "2.0.10"
+  resolved "https://registry.yarnpkg.com/async-wait-until/-/async-wait-until-2.0.10.tgz#d525940df87b48aa1224a4df42a3f9b1ceb24f02"
+  integrity sha512-AQZcXv2XPlLUsKN4G5f9g+xJHpVZC597WaSJtIaZLOBcnSAeLvicdlY9emvymJqrzINGOeX9Pdk8JhFEfr/bUA==
 
 balanced-match@^1.0.0:
   version "1.0.2"

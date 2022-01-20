@@ -49,6 +49,7 @@ export class SoundFxHelper{
                     name: 'sound',
                     description: 'Sound to play',
                     choices: choice,
+                    required: true,
                     type: CommandOptionType.STRING
                 }],
                 type: CommandOptionType.SUB_COMMAND

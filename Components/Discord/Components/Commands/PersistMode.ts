@@ -11,6 +11,7 @@ export class PersistCommand extends SlashCommand {
             options: [{
                 name: 'switch',
                 description: 'True: Turn persist mode on, False: Turn persist mode off',
+                required: true,
                 type: CommandOptionType.BOOLEAN
             }]
         });

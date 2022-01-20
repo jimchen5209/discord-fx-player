@@ -1,7 +1,7 @@
 import { waitUntil } from 'async-wait-until';
 import { Client, VoiceConnection } from 'eris';
 import EventEmitter from 'events';
-import { Category } from 'logging-ts';
+import { Logger } from 'tslog-helper';
 import Queue from 'promise-queue';
 import { MessageInteractionContext } from 'slash-create';
 import { SoundFxHelper } from './SoundFxHelper';
@@ -11,7 +11,7 @@ export class DiscordVoice extends EventEmitter {
     public currentChannelId: string | undefined;
     private bot: Client;
     private voice: VoiceConnection | undefined;
-    private logger: Category;
+    private logger: Logger;
     private flush = false;
     private persist = false;
 
@@ -29,7 +29,7 @@ export class DiscordVoice extends EventEmitter {
         }
     });
 
-    constructor(bot: Client, logger: Category, guildId: string) {
+    constructor(bot: Client, logger: Logger, guildId: string) {
         super();
         this.guildId = guildId;
         this.bot = bot;

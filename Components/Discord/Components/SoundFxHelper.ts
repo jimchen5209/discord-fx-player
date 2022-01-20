@@ -1,5 +1,5 @@
 import { Client, Message, PossiblyUncachedTextableChannel } from 'eris';
-import { Category } from 'logging-ts';
+import { Logger } from 'tslog-helper';
 // import Queue from 'promise-queue';
 import { Core } from '../../..';
 import { SoundFx } from '../../../Core/SoundFX';
@@ -11,14 +11,14 @@ export class SoundFxHelper{
     private config: Config;
     private bot: Client;
     private soundFx: SoundFx;
-    private logger: Category;
+    private logger: Logger;
     private audios: { [key: string]: DiscordVoice } = {};
 
     constructor(core: Core, bot: Client) {
         this.bot = bot;
         this.config = core.config;
         this.soundFx = new SoundFx(core);
-        this.logger = new Category('SoundFxHelper', core.mainLogger);
+        this.logger = core.mainLogger.getChildLogger({ name: 'SoundFxHelper' });
     }
 
     public reloadSoundList() {

@@ -1,14 +1,14 @@
 import fs from 'fs';
-import { Category } from 'logging-ts';
+import { Logger } from 'tslog-helper';
 import { Core } from '..';
 
 export class SoundFx {
     private command: { [key: string]: { [key: string]: string } } = {};
     private keyword: { [key: string]: string } = {};
-    private logger: Category;
+    private logger: Logger;
 
     constructor(core: Core) {
-        this.logger = new Category('SoundFx', core.mainLogger);
+        this.logger = core.mainLogger.getChildLogger({ name: 'SoundFx' });
         this.reload();
     }
 

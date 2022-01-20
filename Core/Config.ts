@@ -1,14 +1,14 @@
 import fs from 'fs';
-import { Category } from 'logging-ts';
+import { Logger } from 'tslog-helper';
 import { Core } from '..';
 
 export class Config {
     public discord: { botToken: string, applicationID: string, publicKey: string, admins: string[] };
     public debug: boolean;
-    private logger: Category;
+    private logger: Logger;
 
     constructor(core: Core) {
-        this.logger = new Category('Config', core.mainLogger);
+        this.logger = core.mainLogger.getChildLogger({ name: 'Config' });
         this.logger.info('Loading Config...');
         const discordDefaultConfig = { botToken: '', applicationID: '', publicKey: '', admins: [] };
         if (fs.existsSync('./config.json')) {

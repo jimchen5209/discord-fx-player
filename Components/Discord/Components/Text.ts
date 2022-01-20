@@ -1,5 +1,5 @@
 import { Client, TextChannel } from 'eris'; //MessageFile, MessageContent, Message,, PossiblyUncachedTextableChannel
-import { Category } from 'logging-ts';
+import { Logger } from 'tslog-helper';
 import { SoundFxHelper } from './SoundFxHelper';
 
 // const ERR_NOT_IN_VOICE_CHANNEL = 'You are not in any voice channel.';
@@ -8,10 +8,10 @@ import { SoundFxHelper } from './SoundFxHelper';
 
 export class DiscordText {
     private bot: Client;
-    private logger: Category;
+    private logger: Logger;
     private soundFxHelper: SoundFxHelper;
 
-    constructor(soundFxHelper: SoundFxHelper, bot: Client, logger: Category) {
+    constructor(soundFxHelper: SoundFxHelper, bot: Client, logger: Logger) {
         this.bot = bot;
         this.logger = logger;
         this.soundFxHelper = soundFxHelper;

@@ -1,10 +1,11 @@
 import { Config } from './Core/Config';
-import { catService } from 'logging-ts';
+import { LogHelper } from 'tslog-helper';
 import { Discord } from './Components/Discord/Core';
 import { Status } from 'status-client';
 
 export class Core {
-    public readonly mainLogger = catService;
+    private readonly logHelper = new LogHelper();
+    public readonly mainLogger = this.logHelper.logger;
     public readonly config = new Config(this);
     private readonly status = new Status('fx-player');
 

@@ -1,5 +1,5 @@
 import { Client } from 'eris';
-import { Category } from 'logging-ts';
+import { Logger } from 'tslog-helper';
 import { AnyRequestData, CommandContext, GatewayServer, SlashCommand, SlashCreator } from 'slash-create';
 import { Core } from '../../..';
 import { Config } from '../../../Core/Config';
@@ -15,13 +15,13 @@ export class Command {
     private config: Config;
     private bot: Client;
     private creator: SlashCreator;
-    private logger: Category;
+    private logger: Logger;
     private soundFxHelper: SoundFxHelper;
     
     constructor(core: Core, bot: Client, soundFxHelper: SoundFxHelper) {
         this.config = core.config;
         this.bot = bot;
-        this.logger = new Category('Command', core.mainLogger);
+        this.logger = core.mainLogger.getChildLogger({ name: 'Command' });
         this.soundFxHelper = soundFxHelper;
 
         this.creator = new SlashCreator({

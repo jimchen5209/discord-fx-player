@@ -224,7 +224,7 @@ export class SoundFxHelper{
         }
     }
 
-    public async presist(context: CommandContext) {
+    public async persist(context: CommandContext) {
         if (!context.guildID || !context.member) return;
         const member = await this.bot.getRESTGuildMember(context.guildID, context.member.id);
         if (!member) return;
@@ -245,20 +245,20 @@ export class SoundFxHelper{
             const channelId = member.voiceState.channelID;
             if (!channelId) {
                 await context.send({
-                    content: 'Join a voice channel to turn on presist mode',
+                    content: 'Join a voice channel to turn on persist mode',
                     ephemeral: true
                 });
                 return;
             }
 
             if (!this.audios[context.guildID]) this.audios[context.guildID] = new DiscordVoice(this.bot, this.logger, context.guildID);
-            await this.audios[context.guildID].presistSwitch(true, channelId);
+            await this.audios[context.guildID].persistSwitch(true, channelId);
 
             await context.send({
-                content: 'Voice presist mode activated'
+                content: 'Voice persist mode activated'
             });
         } else {
-            if (this.audios[context.guildID]) await this.audios[context.guildID].presistSwitch(false);
+            if (this.audios[context.guildID]) await this.audios[context.guildID].persistSwitch(false);
             
             await context.send({
                 content: 'Bot will now leave voice channel once queue is empty.'

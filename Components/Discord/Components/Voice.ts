@@ -13,12 +13,12 @@ export class DiscordVoice extends EventEmitter {
     private voice: VoiceConnection | undefined;
     private logger: Category;
     private flush = false;
-    private presist = false;
+    private persist = false;
 
     private queue: Queue = new Queue(1, Infinity, {
         onEmpty: () => {
             if (this.currentChannelId) {
-                if (!this.presist) {
+                if (!this.persist) {
                     this.bot.leaveVoiceChannel(this.currentChannelId);
                     this.voice = undefined;
                     this.currentChannelId = undefined;
@@ -86,15 +86,15 @@ export class DiscordVoice extends EventEmitter {
         });
     }
 
-    public async presistSwitch(option: boolean, channelID: string | undefined = undefined) {
+    public async persistSwitch(option: boolean, channelID: string | undefined = undefined) {
         if (option && channelID) {
-            this.presist = true;
+            this.persist = true;
             if (!this.voice) {
                 this.voice = await this.bot.joinVoiceChannel(channelID);
                 this.currentChannelId = channelID;
             }
         } else {
-            this.presist = false;
+            this.persist = false;
             if (this.currentChannelId) {
                 if (this.queue.getPendingLength() === 0 && this.queue.getQueueLength() === 0) {
                     this.bot.leaveVoiceChannel(this.currentChannelId);

@@ -1,16 +1,16 @@
 import { CommandContext, CommandOptionType, SlashCommand, SlashCreator } from 'slash-create';
 import { SoundFxHelper } from '../SoundFxHelper';
 
-export class PresistCommand extends SlashCommand {
+export class PersistCommand extends SlashCommand {
     private soundFxHelper: SoundFxHelper;
     constructor(creator: SlashCreator, guildIDs: string[], soundFxHelper: SoundFxHelper) {
         super(creator, {
-            name: 'presist',
-            description: 'Changes server voice presist mode (admin)',
+            name: 'persist',
+            description: 'Changes server voice persist mode (admin)',
             guildIDs,
             options: [{
                 name: 'switch',
-                description: 'True: Turn presist mode on, False: Turn presist mode off',
+                description: 'True: Turn persist mode on, False: Turn persist mode off',
                 type: CommandOptionType.BOOLEAN
             }]
         });
@@ -18,6 +18,6 @@ export class PresistCommand extends SlashCommand {
     }
 
     async run(ctx: CommandContext) {
-        this.soundFxHelper.presist(ctx);
+        this.soundFxHelper.persist(ctx);
     }
 }

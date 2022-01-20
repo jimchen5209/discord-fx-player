@@ -12,19 +12,19 @@
   },
   "dependencies": {
     "async-wait-until": "^2.0.7",
-    "eris": "^0.15.1",
+    "eris": "^0.16.1",
     "logging-ts": "https://github.com/jimchen5209/Logging-TS.git",
     "promise-queue": "^2.2.5",
-    "slash-create": "^3.2.3",
+    "slash-create": "^5.0.3",
     "status-client": "https://github.com/jimchen5209/StatusClient_JS#2.0.0"
   },
   "devDependencies": {
     "@types/node": "^16.11.7",
     "@types/promise-queue": "^2.2.0",
     "@types/ws": "^8.2.0",
-    "@typescript-eslint/eslint-plugin": "^4.28.0",
-    "@typescript-eslint/parser": "^4.28.0",
-    "eslint": "^7.29.0",
+    "@typescript-eslint/eslint-plugin": "^5.10.0",
+    "@typescript-eslint/parser": "^5.10.0",
+    "eslint": "^8.7.0",
     "typescript": "^4.3.4"
   }
 }

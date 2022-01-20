@@ -70,12 +70,16 @@ export class DiscordVoice extends EventEmitter {
             
             if (context) context.editOriginal('Playing your requested sound...');
 
-            this.voice.once('end', (abort = false) => {
+            this.once('playEnd', (abort = false) => {
                 if (context && helper && subCommand && command) {
                     context.editOriginal(abort? 'Aborted' : 'Finished playing', {
                         components: [helper.getReplayButton(subCommand, command, false)]
                     });
                 }
+            });
+
+            this.voice.once('end', () => {
+                this.emit('playEnd');
                 res();
             });
             this.voice.play(file);
@@ -103,7 +107,7 @@ export class DiscordVoice extends EventEmitter {
 
     public abort(): boolean {
         if (this.voice && this.voice.playing) {
-            this.voice.emit('end', true);
+            this.emit('playEnd', true);
             this.voice.stopPlaying();
             return true;
         }
@@ -113,7 +117,7 @@ export class DiscordVoice extends EventEmitter {
     public abortAll() {
         if (this.queue.getPendingLength() !== 0 || this.queue.getQueueLength() !== 0) {
             this.flush = true;
-            this.voice?.emit('end', true);
+            this.emit('playEnd', true);
             if (this.voice?.playing) this.voice?.stopPlaying();
         }
         else {

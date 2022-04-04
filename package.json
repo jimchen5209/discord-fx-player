@@ -14,7 +14,7 @@
     "async-wait-until": "^2.0.7",
     "eris": "^0.16.1",
     "promise-queue": "^2.2.5",
-    "slash-create": "^5.0.3",
+    "slash-create": "^5.4.1",
     "status-client": "jimchen5209/StatusClient_JS#2.0.0",
     "tslog-helper": "jimchen5209/TSLog-Helper#2.1.0"
   },

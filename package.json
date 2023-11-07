@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "@types/md5": "^2.3.2",
-    "@types/node": "^16.11.26",
+    "@types/node": "^20.8.10",
     "@types/node-fetch": "^2.6.1",
     "@types/promise-queue": "^2.2.0",
     "@types/ws": "^8.5.1",

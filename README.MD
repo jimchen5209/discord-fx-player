@@ -1,5 +1,8 @@
 # discord-fx-player
 
+## Archived notice
+As discord has released [Soundboard](https://support.discord.com/hc/en-us/articles/12612888127767-Soundboard-FAQ), this project is no longer maintained.
+
 ## How to use
 
 1. Install [node.js](https://nodejs.org/en/) version 14 (Recommend using [nvm](https://github.com/nvm-sh/nvm)), [ffmpeg](https://ffmpeg.org/)

@@ -36,21 +36,28 @@ export class DiscordVoice extends EventEmitter {
         this.logger = logger;
     }
 
-    public queuePlay(channelID: string, file: string, subCommand: string | undefined, command: string | undefined, context: MessageInteractionContext | undefined = undefined, helper: SoundFxHelper | undefined = undefined) {
-        this.queue.add(() => this.play(channelID, file, subCommand, command, context, helper));
+    public queuePlay(channelID: string, file: string, subCommand: string | undefined, command: string | undefined, context: MessageInteractionContext | undefined = undefined, helper: SoundFxHelper | undefined = undefined, timeString: string | undefined = undefined) {
+        this.queue.add(() => this.play(channelID, file, subCommand, command, context, helper, timeString));
         return this.queue;
     }
 
-    public play(channelID: string, file: string, subCommand: string | undefined, command: string | undefined, context: MessageInteractionContext | undefined, helper: SoundFxHelper | undefined = undefined) {
+    public play(channelID: string, file: string, subCommand: string | undefined, command: string | undefined, context: MessageInteractionContext | undefined, helper: SoundFxHelper | undefined = undefined, timeString: string | undefined = undefined) {
         // eslint-disable-next-line no-async-promise-executor
         return new Promise<void>(async (res) => {
             // this.emit('queueUpdate', this.queue, context?.interactionID);
             if (file === '') return;
             if (this.flush) {
                 if (context && helper && subCommand && command) {
-                    context.editOriginal('Queue aborted', {
-                        components: [helper.getReplayButton(subCommand, command, false)]
-                    });
+                    if (timeString == undefined)
+                    {
+                        context.editOriginal('Queue aborted', {
+                            components: [helper.getReplayButton(subCommand, command, false)]
+                        });
+                    }
+                    else
+                    {
+                        context.editOriginal('Queue aborted');
+                    }
                 }
                 res();
                 return;
@@ -68,10 +75,19 @@ export class DiscordVoice extends EventEmitter {
 
             await waitUntil(() => this.voice && this.voice.ready);
             
-            if (context) context.editOriginal('Playing your requested sound...');
+            if (context) {
+                if (timeString == undefined)
+                {
+                    context.editOriginal('Playing your requested sound...');
+                }
+                else
+                {
+                    context.editOriginal(timeString);
+                }
+            }
 
             this.once('playEnd', (abort = false) => {
-                if (context && helper && subCommand && command) {
+                if (context && helper && subCommand && command && (timeString == undefined)) {
                     context.editOriginal(abort? 'Aborted' : 'Finished playing', {
                         components: [helper.getReplayButton(subCommand, command, false)]
                     });

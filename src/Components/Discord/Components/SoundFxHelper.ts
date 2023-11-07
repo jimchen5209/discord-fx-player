@@ -1,12 +1,18 @@
 import { Client, Message, PossiblyUncachedTextableChannel } from 'eris';
 import { Logger } from 'tslog-helper';
 // import Queue from 'promise-queue';
+import md5 from 'md5';
+import fetch from 'node-fetch';
+import { promisify } from 'util';
+import { pipeline } from 'stream';
 import { Core } from '../../..';
 import { SoundFx } from '../../../Core/SoundFX';
 import { DiscordVoice } from './Voice';
 import { ApplicationCommandOption, ApplicationCommandOptionChoice, ButtonStyle, CommandContext, CommandOptionType, ComponentActionRow, ComponentContext, ComponentType, MessageInteractionContext } from 'slash-create';
 import { Config } from '../../../Core/Config';
+import { createWriteStream, existsSync } from 'fs';
 
+const streamPipeline = promisify(pipeline);
 export class SoundFxHelper{
     private config: Config;
     private bot: Client;
@@ -266,5 +272,118 @@ export class SoundFxHelper{
             });
         }
 
+    }
+
+    public async time(context: CommandContext) {
+        if (!context.guildID || !context.member) return;
+        const guildId = context.guildID;
+        const member = await this.bot.getRESTGuildMember(context.guildID, context.member.id);
+        if (!member) return;
+        const channelId = member.voiceState.channelID;
+        if (!channelId) {
+            await context.send({
+                content: 'You are not even in a voice channel',
+                ephemeral: true
+            });
+            return;
+        }
+        await context.send('Queued...');
+
+        if (!this.audios[guildId]) this.audios[guildId] = new DiscordVoice(this.bot, this.logger, guildId);
+        const timeString = this.getTime();
+        const time = await await this.getTTSFile(timeString, 'zh_TW');
+        if (time != null) 
+        {
+            const queue = this.audios[guildId].queuePlay(channelId, time, undefined, undefined, context, this, timeString);
+            context.editOriginal(`Pending: ${queue.getPendingLength()}/1 Queued: ${queue.getQueueLength()}`);
+        }
+    }
+
+    private getTime(): string
+    {
+        const nowTime = new Date();
+        const hourText = this.numberToString(nowTime.getHours(), false);
+        const minuteText = this.numberToString(nowTime.getMinutes(), true);
+        return `現在時刻 ${hourText}點${((nowTime.getMinutes() != 0) ? `${minuteText}分` : '整')}`;
+    }
+
+    private async getTTSFile(text: string, lang: string): Promise<string | null> {
+        const filePath = `./caches/${md5(`${text}-${lang}`)}.opus`;
+        if (!existsSync(filePath)) {
+            const ttsURL = encodeURI(`https://translate.google.com.tw/translate_tts?ie=UTF-8&q=${text}&tl=${lang}&client=tw-ob`);
+            try {
+                await this.download(ttsURL, filePath);
+            } catch (error) {
+                if (error instanceof Error) {
+                    this.logger.error(`TTS ${text} in ${lang} download failed: ${error.message}`, error);
+                }
+                return null;
+            }
+        }
+        return filePath;
+    }
+
+    private async download(url: string, path: string) {
+        await fetch(url)
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`unexpected response ${res.statusText}`);
+                }
+
+                return streamPipeline(res.body, createWriteStream(path));
+            });
+    }
+
+    private numberToString(number: number, addZero: boolean): string {
+        let text = (number < 0) ? '負' : '';
+        const parseNumber = Math.abs(number);
+
+        const splittedText = parseNumber.toString().split('').reverse();
+
+        if (parseNumber >= 1000) {
+            text += `${this.digitToString(splittedText[3])}千`;
+        }
+
+        if (parseNumber >= 100) {
+            text += `${this.digitToString(splittedText[2])}百`;
+        }
+
+        if (parseNumber >= 10) {
+            text += (splittedText[1] != '1' || parseNumber >= 100) ? `${this.digitToString(splittedText[1])}十` : '十';
+            text += (splittedText[0] != '0') ? `${this.digitToString(splittedText[0])}` : '';
+        } else if (parseNumber == 0) {
+            text += '零';
+        } else {
+            text += `${(((addZero && number > 0) || parseNumber >= 100) ? '零' : '')}${this.digitToString(splittedText[0])}`;
+        }
+
+        return text;
+    }
+
+    private digitToString(digit: string): string {
+        switch (digit) {
+        case '0':
+            return '零';
+        case '1':
+            return '一';
+        case '2':
+            return '二';
+        case '3':
+            return '三';
+        case '4':
+            return '四';
+        case '5':
+            return '五';
+        case '6':
+            return '六';
+        case '7':
+            return '七';
+        case '8':
+            return '八';
+        case '9':
+            return '九';
+        default:
+            throw Error('digit must between 0 to 9');
+        }
     }
 }

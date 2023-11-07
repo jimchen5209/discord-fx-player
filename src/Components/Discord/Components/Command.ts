@@ -10,6 +10,7 @@ import { ReloadCommand } from './Commands/Reload';
 import { PlayCommand } from './Commands/Play';
 import { SoundFxHelper } from './SoundFxHelper';
 import { PersistCommand } from './Commands/PersistMode';
+import { TimeCommand } from './Commands/Time';
 
 export class Command {
     private config: Config;
@@ -62,7 +63,8 @@ export class Command {
                 new AbortCommand(this.creator, guildIDs, this.soundFxHelper),
                 new FlushCommand(this.creator, guildIDs, this.soundFxHelper),
                 new PersistCommand(this.creator, guildIDs, this.soundFxHelper),
-                new ReloadCommand(this.creator, guildIDs, this)
+                new ReloadCommand(this.creator, guildIDs, this),
+                new TimeCommand(this.creator, guildIDs, this.soundFxHelper)
             ];
 
             this.creator.registerCommands(commands);
